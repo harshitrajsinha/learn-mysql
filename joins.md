@@ -11,5 +11,12 @@ NOTE: Hackerrank (basic joins) Question-1: Population census  can be solved usin
 
 But since LEFT Join populates null result of 2nd table also, we need to add additional condition 'WHERE country.code IS NOT NULL' so that those rows will be filtered out and sum(popluation) will be calculated, else additional population will be summed for those whose country table values are NULL.
 
+# Why this error occurs (group by)- 
+"ERROR 1055 (42000) at line 1: Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'country.name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by"
+
+This error occurs when we use group by in query and then try to output some data which has been grouped by and does not hold individual significance. For example - If we group first_name from persons table based on 'first_letter' of first_name then we can print 'first_letter' but we cannot print first_name
+In the below query we can successfully query country.continent but we cannot query country.name and it will result in above sql error.
+Query- select country.continent, floor(avg(city.population)) from city inner join country on city.countrycode = country.code group by country.continent; (Success)
+Query- select country.name, country.continent, floor(avg(city.population)) from city inner join country on city.countrycode = country.code group by country.continent; (Fail)
 
 
