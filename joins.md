@@ -2,6 +2,9 @@
 
 NOTE: Using Inner_Join is more optimized and readable than using subquery using IN operator
 
+select col1.table1, col2.table2 from table1, table2 where col1.table1 = col2.table2;           [such query should be used when we don't need to join and select cols only from one table, but based on two-table condition]
+select * from table1 inner join table2 on col1.table1 = col2.table2;
+
 
 # LEFT Join:
 
@@ -26,8 +29,12 @@ Hackerrank (basic joins) Question: Top Competitors
 
 This error occurs when we use group by in query and then try to output some data which has been grouped by and does not hold individual significance. For example - If we group first_name from persons table based on 'first_letter' of first_name then we can print 'first_letter' but we cannot print first_name
 In the below query we can successfully query country.continent but we cannot query country.name and it will result in above sql error.
-Query- select country.continent, floor(avg(city.population)) from city inner join country on city.countrycode = country.code group by country.continent; [PASS]
+Query- select country.continent, floor(avg(city.population)) from city inner join country on city.countrycode = country.code group by country.continent; [PASS] 
 Query- select country.name, country.continent, floor(avg(city.population)) from city inner join country on city.countrycode = country.code group by country.continent; [FAIL]
+
+[solution]:
+This can be solved using sub-query:
+Query- select t2.*,tbl_user.name from tbl_user  join (SELECT uid ,pid, max(price) FROM tbl_purchase group by uid,pid) as t2 on (t2.uid=tbl_user.id);
 
 
 # GROUP BY: 
@@ -36,7 +43,7 @@ Query- select country.name, country.continent, floor(avg(city.population)) from 
 --> add those colum also in group by clause
 {
 select col1, col2 from table group by col1;                    [FAIL]
-select col1, col2 from table group by col1, col2;               [PASS]
+select col1, col2 from table group by col1, col2;              [PASS]
 }
 
 
